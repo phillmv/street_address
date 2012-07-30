@@ -1,4 +1,4 @@
-module StreetAddress
+class StreetAddress
 
   Directional = {
     "north"	=> "N",
@@ -500,6 +500,16 @@ module StreetAddress
 
   end
 
+  def StreetAddress.read(address)
+    result = RegExs["address"].match(address).to_a
+    if result.nil?
+      return false
+    else
+      result.shift
+      return StreetAddress.new(result)
+    end
+  end
+
   def StreetAddress.normalize(result)
     
     result.map { |x| x.gsub!(/^\s+|\s+$|[^\w\s\-]/s,'') unless x.nil? }
@@ -529,4 +539,45 @@ module StreetAddress
     address
   end
 
+  def initialize(result)
+    result.map { |x| x.gsub!(/^\s+|\s+$|[^\w\s\-]/s,'') unless x.nil? }
+    
+    @address =  {
+      'number' => result[0].to_s,
+      'prefix' => result[3].to_s,
+      'street' => result[4].to_s,
+      'type' =>  result[5].to_s,
+      'suffix' => result[6].to_s,
+      'city' => result[12].to_s,
+      'state' => result[13].to_s,
+      'zip' => result[14].to_s
+    }.reject { |k,v| v.empty? }
+
+    @address['zip'].gsub!(/-.*$/s,'') if @address['zip']
+
+  end
+
+  def street
+    [@address["prefix"], @address["street"], @address["type"], @address["suffix"]].compact.join(" ")
+  end
+
+  def street_number
+    [@address["number"], self.street].compact.join(" ")
+  end
+
+  def city
+    @address["city"]
+  end
+
+  def province
+    @address["state"]
+  end
+
+  def postal_code
+    @address["zip"]
+  end
+
+  def full_address
+    [self.street_number, self.city, self.province, self.postal_code].compact.join(", ")
+  end
 end

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{street_address}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Stevens"]
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
      "test/helper.rb",
      "test/test_street_address.rb"
   ]
-  s.homepage = %q{http://github.com/astevens/street_address}
+  s.homepage = %q{http://github.com/phillmv/street_address}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
